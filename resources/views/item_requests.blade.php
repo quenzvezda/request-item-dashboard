@@ -7,59 +7,85 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Permintaan Barang</title>
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-{{--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">--}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    {{--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>--}}
-    <!-- Gunakan jQuery versi penuh -->
+    <link rel="stylesheet" href="style.css">
+
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-
-    <!-- Kemudian, muat jQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <style>
-        .ui-autocomplete {
-            z-index: 2000; /* Pastikan lebih tinggi dari z-index elemen lain */
-            max-height: 200px; /* Atur tinggi maksimal jika diperlukan */
-            overflow-y: auto; /* Tambahkan scrollbar jika terlalu panjang */
-            border: 1px solid #ddd; /* Sesuaikan gaya border */
-            /* Tambahkan gaya lain sesuai kebutuhan */
-        }
-
-        .status-label {
-            display: inline-block;
-            padding: .25em .4em;
-            font-size: 100%;
-            font-weight: 700;
-            line-height: 1;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: baseline;
-            border-radius: .25rem;
-        }
-
-        .status-diproses { background-color: #ffc107; } /* Warna kuning */
-        .status-terpenuhi { background-color: #28a745; } /* Warna hijau */
-        .status-ditolak { background-color: #dc3545; } /* Warna merah */
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-<!-- Toast Notification -->
-<div class="position-fixed top-0 end-0 p-3 center" style="z-index: 1500">
-    <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <strong class="me-auto">Pemberitahuan</strong>
-            <small>Baru saja</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            Data Berhasil Disimpan.
+
+{{--Modal Pop up Form--}}
+<div class="modal fade" id="addItemRequestModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Tambah Permintaan Barang</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addItemRequestForm">
+                    <div class="form-group">
+                        <label for="nik">NIK Peminta</label>
+                        <input type="text" class="form-control" id="nik" name="nik" placeholder="Masukkan NIK beserta titik (.)">
+                    </div>
+                    <div class="form-group">
+                        <label for="nama">Nama</label>
+                        <input type="text" class="form-control" id="nama" name="nama" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="departemen">Departemen</label>
+                        <input type="text" class="form-control" id="departemen" name="departemen" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggalPermintaan">Tanggal Permintaan</label>
+                        <input type="datetime-local" class="form-control" id="tanggalPermintaan" name="tanggalPermintaan">
+                    </div>
+                    <!-- Tambahkan field lainnya sesuai kebutuhan -->
+                    <div class="form-group table-responsive">
+                        <div class="row" style="padding: 10px;">
+                            <div class="col">
+                                <label>Daftar Barang:</label>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary" onclick="tambahBaris()">Tambah</button>
+                            </div>
+                        </div>
+                        <table class="table" id="daftarBarang">
+                            <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Barang</th>
+                                <th>Lokasi</th>
+                                <th style="width: 80px;">Tersedia</th>
+                                <th>Kuantiti</th>
+                                <th>Satuan</th>
+                                <th>Keterangan</th>
+                                <th>Status</th>
+                                <th>*</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- Baris akan ditambahkan di sini -->
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="submit" form="addItemRequestForm" class="btn btn-primary">Tambah Permintaan</button>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
 <div class="container mt-4">
     <div class="row">
         <div class="col">
@@ -71,8 +97,6 @@
             </button>
         </div>
     </div>
-    @include('item_requests_form')
-
     <table class="table" style="margin-top: 20px">
         <!-- Tabel head dan body -->
         <thead>
@@ -97,21 +121,7 @@
         </tbody>
     </table>
 </div>
-
-<script>
-    $(document).on('addItemRequestSuccess', function() {
-        var toastEl = document.getElementById('liveToast');
-        var toast = new bootstrap.Toast(toastEl);
-        toast.show();
-    });
-</script>
-
-<!-- Bootstrap JS, Popper.js, and jQuery -->
-
-
-<!-- Bootstrap JS dan Popper.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="{{ asset('js/main.js') }}"></script>
 </body>
 </html>
 

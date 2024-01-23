@@ -7,16 +7,12 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Permintaan Barang</title>
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <!-- Style yang sama dari halaman item_requests -->
-    <style>
-        /* (Style yang sama dari halaman item_requests) */
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 </head>
 <body>
 <div class="container mt-4">
@@ -47,7 +43,6 @@
             <th>Nama Barang</th>
             <th>Kuantitas</th>
             <th>Keterangan</th>
-            <!-- Tambahkan kolom lain sesuai kebutuhan -->
         </tr>
         </thead>
         <tbody>
@@ -57,15 +52,11 @@
                 <td>{{ $detail->item->nama_barang }}</td>
                 <td>{{ $detail->kuantitas }}</td>
                 <td>{{ $detail->keterangan }}</td>
-                <!-- Tampilkan data lainnya jika perlu -->
             </tr>
         @endforeach
         </tbody>
     </table>
 </div>
-
-<!-- Bootstrap JS, Popper.js, and jQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
+
